@@ -5,57 +5,54 @@
 //  Created by 석민솔 on 9/11/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(sort: \User.id)
+    var items: [User]
+    
+    let totalCount: Int = 1000000
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        HStack {
+            Button {
+                // TODO: 데이터 추가하기
                 }
-                .onDelete(perform: deleteItems)
+            } label: {
+                Image(systemName: "plus")
+                Text("데이터 추가하기")
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+            .padding()
+            
+            Divider()
+                .frame(height: 30)
+            
+            Button {
+                // TODO: 데이터 전체 삭제
+            } label: {
+                Image(systemName: "trash")
+                Text("전체삭제")
             }
-        } detail: {
-            Text("Select an item")
+            .foregroundStyle(.red)
+            .padding()
         }
-    }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+        List {
+            ForEach(items) { item in
+                ListRowView(user: item)
+            }
+            .onDelete { indexSet in
+                // TODO: 선택한 항목 삭제하기
             }
         }
+        .listStyle(.plain)
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: User.self, inMemory: true)
 }
