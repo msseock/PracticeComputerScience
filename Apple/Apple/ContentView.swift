@@ -11,15 +11,19 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     
-    @Query(sort: \User.id)
-    var items: [User]
+    @State var items: [User] = []
+    @State var currentPage: Int = 0
+    
+    @State var percent: Float = 0.0
+    @State var isLoading: Bool = false
     
     let totalCount: Int = 1000000
 
     var body: some View {
         HStack {
             Button {
-                // TODO: 데이터 추가하기
+                Task {
+                    await addMassiveItems()
                 }
             } label: {
                 Image(systemName: "plus")
@@ -31,7 +35,7 @@ struct ContentView: View {
                 .frame(height: 30)
             
             Button {
-                // TODO: 데이터 전체 삭제
+                deleteAllItem()
             } label: {
                 Image(systemName: "trash")
                 Text("전체삭제")
@@ -43,12 +47,24 @@ struct ContentView: View {
         List {
             ForEach(items) { item in
                 ListRowView(user: item)
+                    .onAppear {
+                        fetchItemsIfNecessary(item: item)
+                    }
             }
             .onDelete { indexSet in
-                // TODO: 선택한 항목 삭제하기
+                deleteItems(offsets: indexSet)
             }
         }
         .listStyle(.plain)
+        .onAppear {
+            performFetch()
+        }
+        .overlay {
+            if isLoading {
+                ProgressView(value: Float(currentPage), total: Float(totalCount/100)) { Text("진행률")}
+                    .padding(.horizontal)
+            }
+        }
     }
 }
 

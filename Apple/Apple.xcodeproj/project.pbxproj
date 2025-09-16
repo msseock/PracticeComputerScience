@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C58415702E79779700292431 /* PreviewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C584156F2E79779700292431 /* PreviewContainer.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C58415492E72A8E500292431 /* Apple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Apple.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C584156F2E79779700292431 /* PreviewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		C58415402E72A8E500292431 = {
 			isa = PBXGroup;
 			children = (
+				C584156F2E79779700292431 /* PreviewContainer.swift */,
 				C584154B2E72A8E500292431 /* Apple */,
 				C584154A2E72A8E500292431 /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C58415702E79779700292431 /* PreviewContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
