@@ -12,7 +12,12 @@ extension ContentView {
     func addMassiveItems() async {
         do {
             print("데이터 추가작업 시작")
-            isLoading = true
+            // 메인 스레드에서 UI 업데이트
+            await MainActor.run {
+                isLoading = true
+                progress = 0.0
+            }
+
             let imageData = try await Image("canlah").exported(as: .jpeg)
 
             // 많은 데이터 입력
@@ -28,15 +33,20 @@ extension ContentView {
 
                 if i % 1000 == 0 {
                     try modelContext.save()
-                    print("\(i / 1000)번째 저장")
-                    DispatchQueue.main.async {
-                        percent = Float(i / totalCount)
+                    
+                    // 메인 스레드에서 진행률 업데이트
+                    await MainActor.run {
+                        progress = Float(i) / Float(totalCount)
                     }
                 }
             }
 
             print("데이터 추가작업 완료")
-            isLoading = false
+            // 메인 스레드에서 UI 업데이트
+            await MainActor.run {
+                isLoading = false
+                progress = 1.0
+            }
             
             performFetch()
 
@@ -76,11 +86,8 @@ extension ContentView {
     }
 
     func deleteAllItem() {
-        isLoading = true
-        
         do {
             try modelContext.container.erase()
-            isLoading = false
             try modelContext.save()
             items.removeAll()
         } catch {

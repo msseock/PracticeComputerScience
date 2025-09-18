@@ -14,7 +14,7 @@ struct ContentView: View {
     @State var items: [User] = []
     @State var currentPage: Int = 0
     
-    @State var percent: Float = 0.0
+    @State var progress: Float = 0.0
     @State var isLoading: Bool = false
     
     let totalCount: Int = 1000000
@@ -61,7 +61,7 @@ struct ContentView: View {
         }
         .overlay {
             if isLoading {
-                ProgressView(value: Float(currentPage), total: Float(totalCount/100)) { Text("진행률")}
+                ProgressView(value: progress) { Text("저장중...")}
                     .padding(.horizontal)
             }
         }
