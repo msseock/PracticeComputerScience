@@ -57,7 +57,7 @@ extension ContentView {
         var fetchDescriptor = FetchDescriptor<User>()
         fetchDescriptor.fetchLimit = 1000
         fetchDescriptor.fetchOffset = currentPage * 1000
-        fetchDescriptor.sortBy = [.init(\.name, order: .forward)]
+        fetchDescriptor.sortBy = [.init(\.id, order: .forward)]
      
         do {
             self.items += try modelContext.fetch(fetchDescriptor)
